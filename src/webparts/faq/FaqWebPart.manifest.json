@@ -5,18 +5,24 @@
   "componentType": "WebPart",
   "version": "*",
   "manifestVersion": 2,
-"requiresCustomScript": false,
-  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart",
+    "TeamsPersonalApp",
+    "TeamsTab",
+    "SharePointFullPage"
+  ],
   "supportsThemeVariants": true,
-
-  "preconfiguredEntries": [{
-    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", 
-    "group": { "default": "Advanced" },
-    "title": { "default": "FAQ" },
-    "description": { "default": "FAQ description" },
-    "officeFabricIconFontName": "Info",
-    "properties": {
-      "description": "FAQ"
+  "preconfiguredEntries": [
+    {
+      "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+      "group": { "default": "Advanced" },
+      "title": { "default": "FAQ" },
+      "description": { "default": "FAQ description" },
+      "officeFabricIconFontName": "Info",
+      "properties": {
+        "description": "FAQ"
+      }
     }
-  }]
+  ]
 }
