@@ -2,6 +2,9 @@ declare interface IWelcomeWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   DescriptionFieldLabel: string;
+  MorningMessageLabel: string;
+  AfternoonMessageLabel: string,
+  EveningMessageLabel: string,
   AppLocalEnvironmentSharePoint: string;
   AppLocalEnvironmentTeams: string;
   AppLocalEnvironmentOffice: string;

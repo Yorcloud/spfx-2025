@@ -14,6 +14,9 @@ import { IWelcomeProps } from './components/IWelcomeProps';
 
 export interface IWelcomeWebPartProps {
   description: string;
+  morningMessage: string;
+  afternoonMessage: string;
+  eveningMessage: string;
 }
 
 export default class WelcomeWebPart extends BaseClientSideWebPart<IWelcomeWebPartProps> {
@@ -26,6 +29,9 @@ export default class WelcomeWebPart extends BaseClientSideWebPart<IWelcomeWebPar
       Welcome,
       {
         description: this.properties.description,
+        morningMessage: this.properties.morningMessage,
+        afternoonMessage: this.properties.afternoonMessage,
+        eveningMessage: this.properties.eveningMessage,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
@@ -110,6 +116,15 @@ export default class WelcomeWebPart extends BaseClientSideWebPart<IWelcomeWebPar
               groupFields: [
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
+                }),
+                PropertyPaneTextField('morningMessage', {
+                  label: strings.MorningMessageLabel
+                }),
+                PropertyPaneTextField('afternoonMessage', {
+                  label: strings.AfternoonMessageLabel
+                }),
+                PropertyPaneTextField('eveningMessage', {
+                  label: strings.EveningMessageLabel
                 })
               ]
             }

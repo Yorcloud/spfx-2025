@@ -4,4 +4,7 @@ export interface IWelcomeProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
+  morningMessage: string;
+  afternoonMessage: string;
+  eveningMessage: string;
 }
