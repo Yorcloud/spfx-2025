@@ -11,6 +11,7 @@ declare interface IFaqWebPartStrings {
   AppOfficeEnvironment: string;
   AppOutlookEnvironment: string;
   UnknownEnvironment: string;
+  ListTitleFieldLabel: string;
 }
 
 declare module 'FaqWebPartStrings' {
