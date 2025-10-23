@@ -12,6 +12,14 @@ import * as strings from 'FaqWebPartStrings';
 import Faq from './components/Faq';
 import { IFaqProps } from './components/IFaqProps';
 
+// Core SharePoint bits
+import { spfi, SPFx, SPFI } from "@pnp/sp";
+// Extend with features you need
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+
 export interface IFaqWebPartProps {
   description: string;
   listTitle: string;
@@ -21,6 +29,7 @@ export default class FaqWebPart extends BaseClientSideWebPart<IFaqWebPartProps> 
 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
+  private sp: SPFI;
 
   public render(): void {
     const element: React.ReactElement<IFaqProps> = React.createElement(
@@ -33,7 +42,8 @@ export default class FaqWebPart extends BaseClientSideWebPart<IFaqWebPartProps> 
         userDisplayName: this.context.pageContext.user.displayName,
         listTitle: this.properties.listTitle,
         siteUrl: this.context.pageContext.web.absoluteUrl,
-        spHttpClient: this.context.spHttpClient
+        spHttpClient: this.context.spHttpClient,
+        sp: this.sp
       }
     );
 
@@ -43,6 +53,7 @@ export default class FaqWebPart extends BaseClientSideWebPart<IFaqWebPartProps> 
   protected onInit(): Promise<void> {
     return this._getEnvironmentMessage().then(message => {
       this._environmentMessage = message;
+      this.sp = spfi().using(SPFx(this.context));
     });
   }
 

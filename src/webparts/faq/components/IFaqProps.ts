@@ -1,4 +1,5 @@
 import { SPHttpClient} from '@microsoft/sp-http'
+import { SPFI } from "@pnp/sp";
 
 export interface IFaqProps {
   description: string;
@@ -7,7 +8,7 @@ export interface IFaqProps {
   hasTeamsContext: boolean;
   userDisplayName: string;
   listTitle: string;
-
+  sp: SPFI;
   spHttpClient: SPHttpClient;
   siteUrl: string;
 }

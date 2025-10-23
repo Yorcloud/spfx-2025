@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './Faq.module.scss';
 import type { IFaqProps } from './IFaqProps';
 import { useEffect, useState } from 'react';
-import { SPHttpClientResponse, SPHttpClient } from '@microsoft/sp-http';
+// import { SPHttpClientResponse, SPHttpClient } from '@microsoft/sp-http';
 
 type ListItem = {
   Id: number,
@@ -19,7 +19,8 @@ const Faq = (props: IFaqProps) => {
     hasTeamsContext,
     listTitle,
     siteUrl,
-    spHttpClient } = props
+    spHttpClient,
+    sp } = props
 
   useEffect(() => {
     let isMounted = true; // guard against unmount
@@ -30,14 +31,18 @@ const Faq = (props: IFaqProps) => {
 
       try {
         const safeTitle = encodeURIComponent(listTitle || ''); // allow empty -> will 404
-        const url =
-          `${siteUrl}/_api/web/lists/getbytitle('${safeTitle}')/items?$select=Id,Title,Body&$top=50`;
+        // const url =
+        //   `${siteUrl}/_api/web/lists/getbytitle('${safeTitle}')/items?$select=Id,Title,Body&$top=50`;
 
-        const res: SPHttpClientResponse = await spHttpClient.get(url, SPHttpClient.configurations.v1);
-        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        // const res: SPHttpClientResponse = await spHttpClient.get(url, SPHttpClient.configurations.v1);
+        // if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
 
-        const data = await res.json();
-        if (isMounted) setItems(data.value as ListItem[]);
+        // const data = await res.json();
+
+        const data = await sp.web.lists.getByTitle(safeTitle).items.select("Id","Title","Body").top(50)();
+        // if (isMounted) setItems(data.value as ListItem[]);
+        if (isMounted) setItems(data as ListItem[]);
+
       } catch (e: any) {
         if (isMounted) setError(e.message || 'Unknown error');
       } finally {
