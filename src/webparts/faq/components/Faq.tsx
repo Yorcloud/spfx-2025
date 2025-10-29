@@ -9,7 +9,7 @@ type ListItem = {
   Title: string,
   Body: string
 }
-const Faq = (props: IFaqProps) => {
+const Faq: React.FC<IFaqProps> = (props) => {
 
   const [items, setItems] = useState<ListItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -17,7 +17,7 @@ const Faq = (props: IFaqProps) => {
 
   const {
     hasTeamsContext,
-    listTitle,
+    listId,
     siteUrl,
     spHttpClient,
     sp } = props
@@ -25,12 +25,12 @@ const Faq = (props: IFaqProps) => {
   useEffect(() => {
     let isMounted = true; // guard against unmount
 
-    const fetchItems = async () => {
+    const fetchItems = async (): Promise<void> => {
       setLoading(true);
       setError(null);
 
       try {
-        const safeTitle = encodeURIComponent(listTitle || ''); // allow empty -> will 404
+        const safeId = encodeURIComponent(listId || ''); // allow empty -> will 404
         // const url =
         //   `${siteUrl}/_api/web/lists/getbytitle('${safeTitle}')/items?$select=Id,Title,Body&$top=50`;
 
@@ -39,19 +39,27 @@ const Faq = (props: IFaqProps) => {
 
         // const data = await res.json();
 
-        const data = await sp.web.lists.getByTitle(safeTitle).items.select("Id","Title","Body").top(50)();
+        const data = await sp.web.lists.getById(safeId).items.select("Id", "Title", "Body").top(50)();
         // if (isMounted) setItems(data.value as ListItem[]);
         if (isMounted) setItems(data as ListItem[]);
 
-      } catch (e: any) {
-        if (isMounted) setError(e.message || 'Unknown error');
+      } catch (e: unknown) {
+        if (isMounted) {
+          const message = e instanceof Error ? e.message : String(e);
+          setError(message || 'Unknown error');
+        }
       } finally {
         if (isMounted) setLoading(false);
       }
     };
 
-    if (listTitle && listTitle.trim().length > 0) {
-      fetchItems();
+    if (listId && listId.trim().length > 0) {
+      (async () => {
+        await fetchItems();
+      })().catch(err => {
+        // Optional: handle unexpected errors outside fetchItems()
+        console.error('FetchItems failed', err);
+      });
     } else {
       setItems([]);
       setLoading(false);
@@ -59,13 +67,13 @@ const Faq = (props: IFaqProps) => {
 
     return () => { isMounted = false; };
 
-  }, [spHttpClient, siteUrl, listTitle])
+  }, [spHttpClient, siteUrl, listId])
 
   return (
     <section className={`${styles.faq} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
         <h2>FAQ</h2>
-        {!listTitle && <div>Set a <strong>List title</strong> in the property pane.</div>}
+        {!listId && <div>Set a <strong>List title</strong> in the property pane.</div>}
         {loading && <div>Loading…</div>}
         {error && <div role="alert">Error: {error}</div>}
         {!loading && !error && items.length > 0 && (
@@ -73,7 +81,7 @@ const Faq = (props: IFaqProps) => {
             {items.map(i => <li key={i.Id}>{i.Title ?? <em>(no title)</em>} - {i.Body}</li>)}
           </ul>
         )}
-        {!loading && !error && listTitle && items.length === 0 && (
+        {!loading && !error && listId && items.length === 0 && (
           <div>No items found.</div>
         )}
       </div>

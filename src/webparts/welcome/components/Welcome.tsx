@@ -3,7 +3,7 @@ import styles from './Welcome.module.scss';
 import type { IWelcomeProps } from './IWelcomeProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 
-const Welcome = (props:IWelcomeProps) => {
+const Welcome: React.FC<IWelcomeProps> = (props) => {
 
    const {
       hasTeamsContext,

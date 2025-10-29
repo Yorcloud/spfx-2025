@@ -18,11 +18,12 @@ import { spfi, SPFx, SPFI } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import { PropertyFieldListPicker, PropertyFieldListPickerOrderBy } from '@pnp/spfx-property-controls';
 
 
 export interface IFaqWebPartProps {
   description: string;
-  listTitle: string;
+  listId: string;
 }
 
 export default class FaqWebPart extends BaseClientSideWebPart<IFaqWebPartProps> {
@@ -30,6 +31,10 @@ export default class FaqWebPart extends BaseClientSideWebPart<IFaqWebPartProps> 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
   private sp: SPFI;
+
+  protected get disableReactivePropertyChanges(): boolean {
+    return true;
+  }
 
   public render(): void {
     const element: React.ReactElement<IFaqProps> = React.createElement(
@@ -40,7 +45,7 @@ export default class FaqWebPart extends BaseClientSideWebPart<IFaqWebPartProps> 
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
-        listTitle: this.properties.listTitle,
+        listId: this.properties.listId,
         siteUrl: this.context.pageContext.web.absoluteUrl,
         spHttpClient: this.context.spHttpClient,
         sp: this.sp
@@ -126,8 +131,19 @@ export default class FaqWebPart extends BaseClientSideWebPart<IFaqWebPartProps> 
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
                 }),
-                 PropertyPaneTextField('listTitle', {
-                  label: strings.ListTitleFieldLabel
+                 PropertyFieldListPicker('listId', {
+                  label: strings.ListTitleFieldLabel,
+                  selectedList: this.properties.listId,
+                  includeHidden: false,
+                  orderBy: PropertyFieldListPickerOrderBy.Title,
+                  multiSelect: false,
+                  disabled: false,
+                  onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
+                  properties: this.properties,
+                  context: this.context,
+                  onGetErrorMessage: undefined,
+                  deferredValidationTime: 0,
+                  key: "listIdUnique"
                 })
               ]
             }

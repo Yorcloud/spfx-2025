@@ -7,7 +7,7 @@ export interface IFaqProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
-  listTitle: string;
+  listId: string;
   sp: SPFI;
   spHttpClient: SPHttpClient;
   siteUrl: string;
