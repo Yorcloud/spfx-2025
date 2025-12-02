@@ -2,6 +2,9 @@ import * as React from 'react';
 import styles from './Faq.module.scss';
 import type { IFaqProps } from './IFaqProps';
 import { useEffect, useState } from 'react';
+import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
+import { Accordion } from "@pnp/spfx-controls-react/lib/Accordion";
+
 // import { SPHttpClientResponse, SPHttpClient } from '@microsoft/sp-http';
 
 type ListItem = {
@@ -20,7 +23,8 @@ const Faq: React.FC<IFaqProps> = (props) => {
     listId,
     siteUrl,
     spHttpClient,
-    sp } = props
+    sp,
+    context } = props
 
   useEffect(() => {
     let isMounted = true; // guard against unmount
@@ -69,17 +73,22 @@ const Faq: React.FC<IFaqProps> = (props) => {
 
   }, [spHttpClient, siteUrl, listId])
 
+  const _onConfigure = (): void => {
+    // Context of the web part
+    context.propertyPane.open();
+  };
+
   return (
     <section className={`${styles.faq} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
         <h2>FAQ</h2>
-        {!listId && <div>Set a <strong>List title</strong> in the property pane.</div>}
+        {!listId && <Placeholder description={'Please configure the list'} iconName={'Edit'} iconText={'Setup Required'} buttonLabel='Configure' onConfigure={_onConfigure} />}
         {loading && <div>Loading…</div>}
         {error && <div role="alert">Error: {error}</div>}
         {!loading && !error && items.length > 0 && (
-          <ul>
-            {items.map(i => <li key={i.Id}>{i.Title ?? <em>(no title)</em>} - {i.Body}</li>)}
-          </ul>
+          <>
+            {items.map(i => <Accordion defaultCollapsed={true} key={i.Id} title={i.Title}><p>{i.Body}</p></Accordion>)}
+          </>
         )}
         {!loading && !error && listId && items.length === 0 && (
           <div>No items found.</div>

@@ -48,7 +48,8 @@ export default class FaqWebPart extends BaseClientSideWebPart<IFaqWebPartProps> 
         listId: this.properties.listId,
         siteUrl: this.context.pageContext.web.absoluteUrl,
         spHttpClient: this.context.spHttpClient,
-        sp: this.sp
+        sp: this.sp,
+        context: this.context
       }
     );
 

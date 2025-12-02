@@ -23,6 +23,7 @@
   "localizedResources": {
     "WelcomeWebPartStrings": "lib/webparts/welcome/loc/{locale}.js",
     "FaqWebPartStrings": "lib/webparts/faq/loc/{locale}.js",
-    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
   }
 }

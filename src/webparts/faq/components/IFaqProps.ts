@@ -1,5 +1,6 @@
 import { SPHttpClient} from '@microsoft/sp-http'
 import { SPFI } from "@pnp/sp";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 export interface IFaqProps {
   description: string;
@@ -11,4 +12,5 @@ export interface IFaqProps {
   sp: SPFI;
   spHttpClient: SPHttpClient;
   siteUrl: string;
+  context: WebPartContext;
 }
